@@ -1,6 +1,6 @@
 package com.example.projectspring.repository;
 
-import com.example.projectspring.model.User;
+import com.example.projectspring.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

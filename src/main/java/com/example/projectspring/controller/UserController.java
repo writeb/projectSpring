@@ -1,6 +1,6 @@
 package com.example.projectspring.controller;
-import com.example.projectspring.model.AuthRequest;
-import com.example.projectspring.model.User;
+import com.example.projectspring.domain.dto.AuthRequestDTO;
+import com.example.projectspring.domain.model.User;
 import com.example.projectspring.service.JwtService;
 import com.example.projectspring.service.UserService;
 
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public String authenticateAndGetToken(@RequestBody AuthRequestDTO authRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             return jwtService.generateToken(authRequest.getUsername());

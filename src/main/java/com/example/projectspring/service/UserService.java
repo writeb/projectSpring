@@ -1,6 +1,6 @@
 package com.example.projectspring.service;
 
-import com.example.projectspring.model.User;
+import com.example.projectspring.domain.model.User;
 import com.example.projectspring.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
