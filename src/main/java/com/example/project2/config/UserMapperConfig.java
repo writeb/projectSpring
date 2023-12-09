@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class MapperConfig {
+public class UserMapperConfig {
     @Bean
     public UserMapper userMapper() {
         return new UserMapper() {

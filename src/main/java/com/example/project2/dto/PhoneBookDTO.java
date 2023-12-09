@@ -20,5 +20,4 @@ public class PhoneBookDTO {
     private String email;
     private LocalDate b_day;
     private String organization;
-    private UserDTO userDTO;
 }
