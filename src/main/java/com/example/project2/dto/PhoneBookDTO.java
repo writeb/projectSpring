@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PhoneBookDTO {
-
     private String id;
     private String name;
     private String phone_number;
