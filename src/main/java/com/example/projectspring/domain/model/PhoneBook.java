@@ -1,11 +1,9 @@
 package com.example.projectspring.domain.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 @Entity
@@ -24,7 +22,7 @@ public class PhoneBook {
     private String name;
 
     @Column(name = "phone_number")
-    private int phone_number;
+    private String phone_number;
 
     @Column(name = "email")
     private String email;
@@ -41,4 +39,5 @@ public class PhoneBook {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 }

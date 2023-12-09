@@ -36,6 +36,5 @@ public class UserService implements UserDetailsService {
         return "User Added Successfully";
     }
 
-
 }
 

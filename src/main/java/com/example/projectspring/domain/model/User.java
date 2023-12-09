@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Entity
@@ -32,6 +31,6 @@ public class User {
     private String roles;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<PhoneBook> phone_books;
+    private List<PhoneBook> phone_books;
 
 }
