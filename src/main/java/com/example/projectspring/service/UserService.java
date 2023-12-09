@@ -36,5 +36,9 @@ public class UserService implements UserDetailsService {
         return "User Added Successfully";
     }
 
+    public User getUserByID(String id){
+        return this.repository.getReferenceById(id);
+    }
+
 }
 
