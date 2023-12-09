@@ -16,11 +16,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -32,13 +27,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDTO addUser(UserDTO user){
-        if (userRepository.findByEmail(user.getEmail()) == null){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            UserDTO newUser = userMapper.toDto(userRepository.save(userMapper.toModel(user)));
-            return newUser;
-        }
-        return null;
-    }
+
 
 }
