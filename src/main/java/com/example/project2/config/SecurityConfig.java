@@ -34,21 +34,26 @@ public class SecurityConfig {
                 httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         builder.userDetailsService(userService).passwordEncoder(passwordEncoder());
 
+//        httpSecurity
+//                .formLogin()
+//                .loginPage("/login") // "/login" Controller page
+//                .loginProcessingUrl("/auth") // <form action="/auth" method="post">
+//                .usernameParameter("user_email") // <input type = "email" name = "user_email">
+//                .passwordParameter("user_password") // <input type = "password" name = "user_password">
+//                .defaultSuccessUrl("/") // response.sendRedirect("/profile")
+//                .failureUrl("/login?autherror");
+//
+//        httpSecurity
+//                .logout()
+//                .logoutUrl("/log-out") // post request to /sign-out
+//                .logoutSuccessUrl("/login");
         httpSecurity
-                .formLogin()
-                .loginPage("/login") // "/login" Controller page
-                .loginProcessingUrl("/auth") // <form action="/auth" method="post">
-                .usernameParameter("user_email") // <input type = "email" name = "user_email">
-                .passwordParameter("user_password") // <input type = "password" name = "user_password">
-                .defaultSuccessUrl("/") // response.sendRedirect("/profile")
-                .failureUrl("/login?autherror");
+                .authorizeRequests()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();
 
-        httpSecurity
-                .logout()
-                .logoutUrl("/log-out") // post request to /sign-out
-                .logoutSuccessUrl("/login");
-
-        httpSecurity.csrf().disable();
+//        httpSecurity.csrf().disable();
 
         return httpSecurity.build();
     }
