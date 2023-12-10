@@ -10,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PhoneBookService {
@@ -28,6 +31,20 @@ public class PhoneBookService {
     @Transactional
     public void deletePhone(Long id){
         phoneBookRepository.deletePhoneBookById(id);
+    }
+
+    public List<PhoneBook> getByNameAndNumber(String name, String number){
+        List<PhoneBook> all = this.phoneBookRepository.findAll();
+        List<PhoneBook> res = new ArrayList<PhoneBook>();
+
+        for(PhoneBook phoneBook: all){
+            if (phoneBook.getPhone_number().contains(number) && phoneBook.getName().contains(name)){
+                res.add(phoneBook);
+            }
+        }
+
+        return res;
+
     }
 
     public PhoneBookDTO updatePhone(Long id, PhoneBookDTO phoneBookDTO){

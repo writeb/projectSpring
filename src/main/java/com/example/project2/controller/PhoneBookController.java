@@ -5,7 +5,11 @@ import com.example.project2.model.PhoneBook;
 import com.example.project2.service.PhoneBookService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/phone")
@@ -43,6 +47,20 @@ public class PhoneBookController {
     @GetMapping
     public PhoneBookDTO getPhoneByNumber(@RequestParam(name = "number") String number) {
         return phoneBookService.getPhoneByPhone_number(number);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<List<PhoneBook>> getByNameAndNumber(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(name = "number", defaultValue = "") String number
+    ){
+        List<PhoneBook> all = this.phoneBookService.getByNameAndNumber(name, number);
+
+        if(all.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
 
