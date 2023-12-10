@@ -1,14 +1,12 @@
 package com.example.project2.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "t_phonebooks")
-
 public class PhoneBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,7 @@
 package com.example.project2.dto;
-
-
+import com.example.project2.model.User;
 
 import java.time.LocalDate;
-
 
 public class PhoneBookDTO {
 
@@ -13,7 +11,7 @@ public class PhoneBookDTO {
     private String email;
     private LocalDate b_day;
     private String organization;
-    private UserDTO userDTO;
+    private User user;
 
     public Long getId() {
         return id;
@@ -63,11 +61,12 @@ public class PhoneBookDTO {
         this.organization = organization;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
