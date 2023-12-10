@@ -1,6 +1,8 @@
 package com.example.project2.repository;
 
 import com.example.project2.model.PhoneBook;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +18,6 @@ public interface PhoneBookRepository extends JpaRepository<PhoneBook, Long> {
 
     @Query("SELECT ph FROM PhoneBook ph WHERE ph.phone_number = :phone_number")
     PhoneBook findPhoneBookByNumber(@Param("phone_number") String phone_number);
+
+    Page<PhoneBook> findAll(Pageable pageable);
 }

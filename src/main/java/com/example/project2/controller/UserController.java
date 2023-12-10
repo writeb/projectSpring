@@ -1,8 +1,10 @@
 package com.example.project2.controller;
 
 import com.example.project2.dto.UserDTO;
+import com.example.project2.model.User;
 import com.example.project2.service.UserMethodsService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +36,10 @@ public class UserController {
     }
 
 
+    @GetMapping(value = "/all")
+    public Page<User> getAll(@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "10") int size){
+        return userMethodsService.getAllUserEntries(page, size);
+    }
 
 }

@@ -8,6 +8,8 @@ import com.example.project2.model.User;
 import com.example.project2.repository.PermissionRepository;
 import com.example.project2.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +66,10 @@ public class UserMethodsService {
         return userMapper.toDto(userRepository.save(updatedUser));
     }
 
+    public Page<User> getAllUserEntries(int page, int size){
+        PageRequest pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+    }
 //    public UserDTO getUserInfo(){
 //        return getCurrentSessionUser();
 //    }

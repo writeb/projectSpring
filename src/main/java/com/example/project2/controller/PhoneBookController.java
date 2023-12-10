@@ -1,8 +1,10 @@
 package com.example.project2.controller;
 
 import com.example.project2.dto.PhoneBookDTO;
+import com.example.project2.model.PhoneBook;
 import com.example.project2.service.PhoneBookService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,14 +35,21 @@ public class PhoneBookController {
         return phoneBookService.updatePhone(id, phoneBookDTO);
     }
 
-    @GetMapping(value = "/name/{name}")
-    public PhoneBookDTO getPhoneByName(@PathVariable(name = "name") String name){
+    @GetMapping(value = "/name")
+    public PhoneBookDTO getPhoneByName(@RequestParam(name = "name") String name){
         return phoneBookService.getPhoneByName(name);
     }
 
-    @GetMapping(value = "/num/{num}")
-    public PhoneBookDTO getPhoneByNumber(@PathVariable(name = "num") String number){
+    @GetMapping
+    public PhoneBookDTO getPhoneByNumber(@RequestParam(name = "number") String number) {
         return phoneBookService.getPhoneByPhone_number(number);
+    }
+
+
+    @GetMapping(value = "/all")
+    public Page<PhoneBook> getAll(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size){
+        return phoneBookService.getAllPhoneBookEntries(page, size);
     }
 
 

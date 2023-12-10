@@ -6,6 +6,8 @@ import com.example.project2.model.PhoneBook;
 import com.example.project2.repository.PhoneBookRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,6 +47,11 @@ public class PhoneBookService {
 
     public PhoneBookDTO getPhoneByPhone_number(String number){
         return phoneBookMapper.toDto(phoneBookRepository.findPhoneBookByNumber(number));
+    }
+
+    public Page<PhoneBook> getAllPhoneBookEntries(int page, int size){
+        PageRequest pageable = PageRequest.of(page, size);
+        return phoneBookRepository.findAll(pageable);
     }
 
 }
