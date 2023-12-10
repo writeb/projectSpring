@@ -7,13 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "t_permissions")
-@Getter
-@Setter
+
 public class Permission implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
 
     @Column(name = "role")
     private String role;
@@ -21,5 +20,21 @@ public class Permission implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return this.role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
