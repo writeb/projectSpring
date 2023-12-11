@@ -1,4 +1,5 @@
 package com.example.project2.dto;
+
 import com.example.project2.model.User;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ public class PhoneBookDTO {
     private String email;
     private LocalDate b_day;
     private String organization;
+    private Long user_id;
     private User user;
 
     public Long getId() {
@@ -57,10 +59,13 @@ public class PhoneBookDTO {
         return organization;
     }
 
-    public void setOrganization(String organization) {
-        this.organization = organization;
+    public Long getUser_id() {
+        return user_id;
     }
 
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
 
     public User getUser() {
         return user;
@@ -69,4 +74,10 @@ public class PhoneBookDTO {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+
 }

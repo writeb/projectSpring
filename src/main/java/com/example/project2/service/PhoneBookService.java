@@ -3,7 +3,9 @@ package com.example.project2.service;
 import com.example.project2.dto.PhoneBookDTO;
 import com.example.project2.mapper.PhoneBookMapper;
 import com.example.project2.model.PhoneBook;
+import com.example.project2.model.User;
 import com.example.project2.repository.PhoneBookRepository;
+import com.example.project2.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,9 +20,14 @@ import java.util.List;
 public class PhoneBookService {
 
     private final PhoneBookRepository phoneBookRepository;
+    private final UserRepository userRepository;
     private final PhoneBookMapper phoneBookMapper;
 
     public PhoneBookDTO addPhone(PhoneBookDTO phoneBookDTO){
+        System.out.println(phoneBookDTO.getUser_id());
+        User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
+        phoneBookDTO.setUser(user);
+//        System.out.println("PhoneBook User:", );
         return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
     }
 
