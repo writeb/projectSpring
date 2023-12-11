@@ -1,6 +1,7 @@
 package com.example.project2.dto;
 
 import com.example.project2.model.User;
+import lombok.Data;
 
 import java.time.LocalDate;
 
@@ -59,6 +60,10 @@ public class PhoneBookDTO {
         return organization;
     }
 
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
     public Long getUser_id() {
         return user_id;
     }
@@ -74,10 +79,4 @@ public class PhoneBookDTO {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
-
 }

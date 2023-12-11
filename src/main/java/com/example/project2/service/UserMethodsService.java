@@ -57,6 +57,9 @@ public class UserMethodsService {
 
     }
 
+    public List<UserDTO> getUsers(){
+        return userMapper.toDtoList(userRepository.findAll());
+    }
     public UserDTO updateUser(Long id, UserDTO userDTO){
         User updatedUser = userRepository.findUserById(id);
         updatedUser.setEmail(userDTO.getEmail());

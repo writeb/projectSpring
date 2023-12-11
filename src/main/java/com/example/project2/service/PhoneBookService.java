@@ -24,11 +24,18 @@ public class PhoneBookService {
     private final PhoneBookMapper phoneBookMapper;
 
     public PhoneBookDTO addPhone(PhoneBookDTO phoneBookDTO){
-        System.out.println(phoneBookDTO.getUser_id());
-        User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
-        phoneBookDTO.setUser(user);
+        if (phoneBookRepository.findPhoneBookByName(phoneBookDTO.getName()) == null) {
+//        System.out.println(phoneBookDTO.getUser_id());
+            User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
+            phoneBookDTO.setUser(user);
 //        System.out.println("PhoneBook User:", );
-        return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
+            return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
+        }
+        return null;
+    }
+
+    public List<PhoneBookDTO> getPhoneBooks(){
+        return phoneBookMapper.toDtoList(phoneBookRepository.findAll());
     }
 
     public PhoneBookDTO getPhoneById(Long id){
