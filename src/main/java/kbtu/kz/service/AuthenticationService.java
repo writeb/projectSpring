@@ -1,6 +1,7 @@
 package kbtu.kz.service;
 
-import kbtu.kz.service.JwtService;
+import kbtu.kz.domain.model.Permission;
+import kbtu.kz.repository.PermissionRepository;
 import kbtu.kz.domain.dto.Auth.AuthenticationRequest;
 import kbtu.kz.domain.dto.Auth.AuthenticationResponse;
 import kbtu.kz.domain.dto.Auth.RegisterRequest;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,24 +31,38 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final PermissionRepository permissionRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .permissions(request.getPermission())
-        .build();
-    var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
+    if (repository.findUserByEmail(request.getEmail()) != null) {
+      return null;
+    }
+    User newUser = User.builder()
+            .firstname(request.getFirstname())
+            .lastname(request.getLastname())
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .build();
+    changeUserRole(newUser, Integer.valueOf(1));
+    User savedUser = repository.save(newUser);
+
+    String jwtToken = jwtService.generateToken(savedUser);
+    String refreshToken = jwtService.generateRefreshToken(savedUser);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
+            .accessToken(jwtToken)
             .refreshToken(refreshToken)
-        .build();
+            .build();
   }
+
+  public void changeUserRole(User user, Integer roleId) {
+    if (user != null) {
+      List<Permission> permissions = permissionRepository.findPermissionsById(roleId);
+      user.setPermissions(permissions);
+    }
+  }
+
+
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
