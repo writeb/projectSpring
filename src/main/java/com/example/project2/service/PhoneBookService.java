@@ -31,14 +31,11 @@ public class PhoneBookService {
     private static final Logger log = LoggerFactory.getLogger(PhoneBookService.class);
 
     public PhoneBookDTO addPhone(PhoneBookDTO phoneBookDTO){
-        if (phoneBookRepository.findPhoneBookByName(phoneBookDTO.getName()) == null) {
-            User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
-            phoneBookDTO.setUser(user);
-            PhoneBookDTO savedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
-            sendPhoneBookEvent("create", savedPhoneBook);
-            return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
-        }
-        return null;
+        User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
+        phoneBookDTO.setUser(user);
+        PhoneBookDTO savedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
+        sendPhoneBookEvent("create", savedPhoneBook);
+        return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
     }
 
     private void sendPhoneBookEvent(String eventType, PhoneBookDTO phoneBookDTO) {
