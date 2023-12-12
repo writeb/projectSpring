@@ -1,9 +1,11 @@
 package com.example.project2.service;
 
+import com.example.project2.config.JwtService;
 import com.example.project2.dto.PermissionDTO;
 import com.example.project2.dto.UserDTO;
 import com.example.project2.mapper.PermissionMapper;
 import com.example.project2.mapper.UserMapper;
+import com.example.project2.model.AuthenticationResponse;
 import com.example.project2.model.User;
 import com.example.project2.repository.PermissionRepository;
 import com.example.project2.repository.UserRepository;
@@ -24,13 +26,17 @@ public class UserMethodsService {
     private final UserMapper userMapper;
     private final PermissionMapper permissionMapper;
     private final PermissionRepository permissionRepository;
+    private final JwtService jwtService;
 
-    public UserDTO addUser(UserDTO user){
+    public AuthenticationResponse addUser(UserDTO user){
         if (userRepository.findByEmail(user.getEmail()) == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             UserDTO newUser = userMapper.toDto(userRepository.save(userMapper.toModel(user)));
             changeUserRole(newUser.getId(), Long.valueOf(1));
-            return newUser;
+            String jwtToken = jwtService.generateToken(userMapper.toModel(newUser));
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.setToken(jwtToken);
+            return response;
         }
         return null;
     }
