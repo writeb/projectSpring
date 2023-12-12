@@ -10,10 +10,15 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.project2.utils.SerializationUtils;
+import com.example.project2.events.PhoneBookEvent;
+
 
 @Service
 @AllArgsConstructor
@@ -22,17 +27,33 @@ public class PhoneBookService {
     private final PhoneBookRepository phoneBookRepository;
     private final UserRepository userRepository;
     private final PhoneBookMapper phoneBookMapper;
+    private final KafkaTemplate<String, byte[]> kafkaTemplate;
+    private static final Logger log = LoggerFactory.getLogger(PhoneBookService.class);
 
     public PhoneBookDTO addPhone(PhoneBookDTO phoneBookDTO){
         if (phoneBookRepository.findPhoneBookByName(phoneBookDTO.getName()) == null) {
-//        System.out.println(phoneBookDTO.getUser_id());
             User user = this.userRepository.findUserById(phoneBookDTO.getUser_id());
             phoneBookDTO.setUser(user);
-//        System.out.println("PhoneBook User:", );
+            PhoneBookDTO savedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
+            sendPhoneBookEvent("create", savedPhoneBook);
             return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
         }
         return null;
     }
+
+    private void sendPhoneBookEvent(String eventType, PhoneBookDTO phoneBookDTO) {
+        PhoneBookEvent phoneBookEvent = new PhoneBookEvent(eventType, phoneBookDTO);
+        byte[] serializedEvent = SerializationUtils.serializePhoneBookEvent(phoneBookEvent);
+
+        if (serializedEvent != null) {
+            log.info("Sending phone book event to Kafka: {}", phoneBookEvent);
+            kafkaTemplate.send("phoneBookTemplate", serializedEvent);
+        } else {
+            // Обработка ошибок сериализации, если необходимо
+            log.error("Failed to serialize phone book event: {}", phoneBookEvent);
+        }
+    }
+
 
     public List<PhoneBookDTO> getPhoneBooks(){
         return phoneBookMapper.toDtoList(phoneBookRepository.findAll());
@@ -44,7 +65,9 @@ public class PhoneBookService {
 
     @Transactional
     public void deletePhone(Long id){
+        PhoneBookDTO deletedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.findPhoneBookById(id));
         phoneBookRepository.deletePhoneBookById(id);
+        sendPhoneBookEvent("delete", deletedPhoneBook);
     }
 
     public List<PhoneBook> getByNameAndNumber(String name, String number){
@@ -68,6 +91,8 @@ public class PhoneBookService {
         newPhone.setOrganization(phoneBookDTO.getOrganization());
         newPhone.setB_day(phoneBookDTO.getB_day());
         newPhone.setName(phoneBookDTO.getName());
+        PhoneBookDTO updatedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.save(newPhone));
+        sendPhoneBookEvent("update", updatedPhoneBook);
 
         return phoneBookMapper.toDto(phoneBookRepository.save(newPhone));
     }

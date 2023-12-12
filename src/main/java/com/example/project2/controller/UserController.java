@@ -2,6 +2,7 @@ package com.example.project2.controller;
 
 import com.example.project2.dto.UserDTO;
 import com.example.project2.model.AuthenticationResponse;
+import com.example.project2.model.LoginReq;
 import com.example.project2.model.User;
 import com.example.project2.service.UserMethodsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +33,14 @@ public class UserController {
         return userMethodsService.getUserById(id);
     }
 
+    @Operation(summary = "Login user method")
+    @PostMapping(value = "/auth/login")
+    public AuthenticationResponse login(@RequestBody LoginReq req){
+        return userMethodsService.login(req);
+    }
+
     @Operation(summary = "Add user method")
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/auth/register")
     public AuthenticationResponse signUp(@RequestBody UserDTO userDTO){
         return userMethodsService.addUser(userDTO);
     }

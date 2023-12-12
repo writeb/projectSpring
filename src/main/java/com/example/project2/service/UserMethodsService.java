@@ -6,6 +6,7 @@ import com.example.project2.dto.UserDTO;
 import com.example.project2.mapper.PermissionMapper;
 import com.example.project2.mapper.UserMapper;
 import com.example.project2.model.AuthenticationResponse;
+import com.example.project2.model.LoginReq;
 import com.example.project2.model.User;
 import com.example.project2.repository.PermissionRepository;
 import com.example.project2.repository.UserRepository;
@@ -39,6 +40,14 @@ public class UserMethodsService {
             return response;
         }
         return null;
+    }
+
+    public AuthenticationResponse login(LoginReq req){
+        User user = userRepository.findByEmail(req.getEmail());
+        String jwtToken = jwtService.generateToken(user);
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setToken(jwtToken);
+        return response;
     }
 
     public void changeUserRole(Long userId, Long roleId){
