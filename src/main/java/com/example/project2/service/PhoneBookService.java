@@ -35,7 +35,7 @@ public class PhoneBookService {
         phoneBookDTO.setUser(user);
         PhoneBookDTO savedPhoneBook = phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
         sendPhoneBookEvent("create", savedPhoneBook);
-        return phoneBookMapper.toDto(phoneBookRepository.save(phoneBookMapper.toModel(phoneBookDTO)));
+        return savedPhoneBook;
     }
 
     private void sendPhoneBookEvent(String eventType, PhoneBookDTO phoneBookDTO) {

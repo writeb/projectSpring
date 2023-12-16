@@ -65,7 +65,7 @@ public class UserMethodsService {
 
     public void deleteUser(Long id){
         User deleteUser = userRepository.findUserById(id);
-
+        System.out.println(deleteUser);
         if (deleteUser!=null){
             userRepository.deleteById(id);
         }

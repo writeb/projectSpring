@@ -18,7 +18,7 @@ public class PhoneBookSimulation extends Simulation{
 
     private static final ScenarioBuilder POST_SCENARIO_BUILDER = scenario("Load Test Add Phone")
             .exec(http("add-phone-request").post("/phone")
-                    .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWtlQGdtYWlsLmNvbSIsImlhdCI6MTcwMjU0MjQ5NSwiZXhwIjoxNzAyNTQzOTM1fQ.79uA2Sq877uiFqN5ZYt_pE7TBgvKmiqoHVtoztXuDig")
+                    .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXVhbkBnbWFpbC5jb20iLCJpYXQiOjE3MDI1NDUzODUsImV4cCI6MTcwMjU0NjgyNX0.4_iyBCPK5la3OLBPgM-DKPZww7xi7mR0uyIGw6zXf44")
                     .header("Content-Type", "application/json")
                     .body(StringBody("{\n" +
                             "    \"name\":\"Bhjhjhjaid\",\n" +
